@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
 
 import { canParseURL } from '../lib/utils'
-import { Logo } from '../components/Icons'
+import { Download, Logo } from '../components/Icons'
 
 export const QRCode = () => {
   const navigate = useNavigate()
@@ -35,8 +35,9 @@ export const QRCode = () => {
           placeholder="Enter an url"
           autoFocus
         />
-        <button type="submit" className="button">
+        <button type="submit" className="button flex items-center justify-center gap-8">
           QR code
+          <Download />
         </button>
       </form>
     </section>
