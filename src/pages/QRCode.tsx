@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
 
 import { canParseURL } from '../lib/utils'
-import { Download, Logo } from '../components/Icons'
+import { Logo } from '../components/Icons'
 
 export const QRCode = () => {
   const navigate = useNavigate()
