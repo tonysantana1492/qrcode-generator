@@ -37,7 +37,6 @@ export const QRCode = () => {
         />
         <button type="submit" className="button flex items-center justify-center gap-8">
           QR code
-          <Download />
         </button>
       </form>
     </section>
