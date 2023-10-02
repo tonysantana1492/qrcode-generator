@@ -31,13 +31,13 @@ export const Home = () => {
       >
         <input
           name="url"
-          className="h-[30px] flex-grow bg-transparent px-8 text-light outline-none placeholder:text-alternative"
+          className="h-[30px] w-[inherit] flex-grow bg-transparent px-8 text-light outline-none placeholder:text-alternative"
           placeholder="Enter an url"
           autoFocus
         />
         <button
           type="submit"
-          className="button flex items-center justify-center gap-8 whitespace-nowrap"
+          className="button flex items-center justify-center gap-8 whitespace-nowrap max-sm:px-4"
         >
           QR code
         </button>
