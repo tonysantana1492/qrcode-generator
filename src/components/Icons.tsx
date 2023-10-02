@@ -65,7 +65,10 @@ export const Download = () => {
   return (
     <svg
       fill="none"
+      width="15"
+      height="15"
       stroke="currentColor"
+      className="text-blue-300"
       strokeWidth="1.5"
       viewBox="0 0 24 24"
       xmlns="http://www.w3.org/2000/svg"
@@ -83,7 +86,10 @@ export const Download = () => {
 export const Share = () => {
   return (
     <svg
+      width="15"
+      height="15"
       fill="none"
+      className="text-blue-300"
       stroke="currentColor"
       strokeWidth="1.5"
       viewBox="0 0 24 24"

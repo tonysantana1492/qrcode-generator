@@ -1,65 +1,47 @@
-import { Link, LoaderFunctionArgs, redirect, useLoaderData } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
-import QRCode from 'qrcode'
 
 import { canParseURL } from '../lib/utils'
 import { Logo } from '../components/Icons'
 
-export const homeLoader = async ({ request }: LoaderFunctionArgs<string>) => {
-  const href = request.url
-
-  const parseUrl = new URL(href)
-  const url = parseUrl.searchParams.get('url')
-
-  const isvalidURL = canParseURL(url)
-
-  if (!isvalidURL) return redirect('/')
-
-  const qrCode = await QRCode.toDataURL(url!)
-  return qrCode
-}
-
 export const Home = () => {
-  const qr = useLoaderData()
+  const navigate = useNavigate()
 
-  const handleShare = () => {
-    window.navigator.clipboard.writeText(window.location.href)
-    toast.success('URL copied to clipboard!')
-  }
+  const handleSubmitForm = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
 
-  const handleDownloadQrCode = () => {
-    const linkElement = document.createElement('a')
-    linkElement.download = 'qr-code.png'
-    linkElement.href = qr as string
-    linkElement.click()
+    const formElement = event.target as HTMLFormElement
+    const formData = new FormData(formElement)
+
+    const url = formData.get('url') as string
+
+    const isValidURL = canParseURL(url)
+
+    if (!isValidURL) return toast.error('You must enter a valid url')
+
+    navigate(`/generate?url=${url}`)
   }
 
   return (
-    <>
-      <header className="w-full">
-        <Link to="/">
-          <Logo className="m-6 h-8" />
-        </Link>
-      </header>
-      <section className="mt-24 flex w-full max-w-xs flex-col items-center justify-start gap-8">
-        <div className="relative flex items-center justify-center rounded-full bg-sky-950 p-6">
-          <img
-            className="rounded-2xl bg-light p-2"
-            height="auto"
-            width={200}
-            src={qr as string}
-            alt="qr-code"
-          ></img>
-        </div>
-        <div className="mt-6 flex w-full items-center justify-between">
-          <button className="button" onClick={handleDownloadQrCode}>
-            Download
-          </button>
-          <button className="button" onClick={handleShare}>
-            Share
-          </button>
-        </div>
-      </section>
-    </>
+    <section className="mt-52 flex h-full w-full max-w-2xl flex-col items-center justify-start gap-8">
+      <Logo className="h-12" />
+      <form
+        className="flex w-full max-w-2xl items-center justify-between rounded-xl border-2 border-principal bg-slate-950 p-1"
+        onSubmit={handleSubmitForm}
+      >
+        <input
+          name="url"
+          className="h-[30px] flex-grow bg-transparent px-8 text-light outline-none placeholder:text-alternative"
+          placeholder="Enter an url"
+          autoFocus
+        />
+        <button
+          type="submit"
+          className="button flex items-center justify-center gap-8 whitespace-nowrap"
+        >
+          QR code
+        </button>
+      </form>
+    </section>
   )
 }

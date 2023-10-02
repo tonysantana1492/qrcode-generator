@@ -43,6 +43,6 @@
   }
 
   .button {
-    @apply rounded-xl bg-principal px-10 py-3 text-light disabled:opacity-60;
+    @apply rounded-lg bg-principal px-10 py-3 text-light disabled:opacity-60;
   }
 }

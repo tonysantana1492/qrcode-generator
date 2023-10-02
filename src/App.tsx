@@ -1,7 +1,7 @@
 import { Navigate, RouterProvider, createBrowserRouter } from 'react-router-dom'
 
 import { RootLayout } from './layouts/RootLayout'
-import { homeLoader } from './pages/Home'
+import { qrCodeLoader } from './pages/QRCode'
 import { RootBoundary } from './pages/RootBoundary'
 
 const router = createBrowserRouter([
@@ -13,17 +13,17 @@ const router = createBrowserRouter([
       {
         index: true,
         lazy: async () => {
-          const { QRCode } = await import('./pages/QRCode')
-          return { Component: QRCode }
+          const { Home } = await import('./pages/Home')
+          return { Component: Home }
         },
       },
       {
         path: '/generate',
         lazy: async () => {
-          const { Home } = await import('./pages/Home')
-          return { Component: Home }
+          const { QRCode } = await import('./pages/QRCode')
+          return { Component: QRCode }
         },
-        loader: homeLoader,
+        loader: qrCodeLoader,
       },
       {
         path: '*',
