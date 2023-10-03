@@ -1,6 +1,5 @@
 import { Link, LoaderFunctionArgs, redirect, useLoaderData } from 'react-router-dom'
-import { toast } from 'sonner'
-import * as QrCodeGenerator from 'qrcode'
+import QRCode from 'react-qr-code'
 
 import { canParseURL } from '../lib/utils'
 import { Download, Logo, Share } from '../components/Icons'
@@ -15,23 +14,45 @@ export const qrCodeLoader = async ({ request }: LoaderFunctionArgs<string>) => {
 
   if (!isvalidURL) return redirect('/')
 
-  const qrCode = await QrCodeGenerator.toDataURL(url!)
-  return qrCode
+  return url
 }
 
-export const QRCode = () => {
-  const qr = useLoaderData()
+export const QRCodePage = () => {
+  const url = useLoaderData()
 
   const handleShare = () => {
-    window.navigator.clipboard.writeText(window.location.href)
-    toast.success('URL copied to clipboard!')
+    window.navigator.share({ url: window.location.href })
   }
 
+  // const handleDownloadQrCode = () => {
+  //   const linkElement = document.createElement('a')
+  //   linkElement.download = 'qr-code.png'
+  //   linkElement.href = qr as string
+  //   linkElement.click()
+  // }
+
   const handleDownloadQrCode = () => {
-    const linkElement = document.createElement('a')
-    linkElement.download = 'qr-code.png'
-    linkElement.href = qr as string
-    linkElement.click()
+    const svg = document.getElementById('QRCode')
+
+    if (!svg) return
+    const svgData = new XMLSerializer().serializeToString(svg)
+    const canvas = document.createElement('canvas')
+    const ctx = canvas.getContext('2d')
+
+    const img = new Image()
+
+    img.onload = () => {
+      canvas.width = img.width
+      canvas.height = img.height
+      ctx!.drawImage(img, 0, 0)
+      const pngFile = canvas.toDataURL('image/png')
+      const downloadLink = document.createElement('a')
+      downloadLink.download = 'QRCode'
+      downloadLink.href = `${pngFile}`
+      downloadLink.click()
+    }
+
+    img.src = `data:image/svg+xml;base64,${btoa(svgData)}`
   }
 
   return (
@@ -43,13 +64,21 @@ export const QRCode = () => {
       </header>
       <section className="mt-24 flex w-full max-w-xs flex-col items-center justify-start gap-8">
         <div className="relative flex items-center justify-center rounded-full bg-sky-950 p-6">
-          <img
+          {/* <img
             className="rounded-2xl bg-light p-2"
             height="auto"
             width={200}
             src={qr as string}
             alt="qr-code"
-          ></img>
+          ></img> */}
+          <QRCode
+            id="QRCode"
+            className="rounded-2xl bg-light p-4"
+            size={500}
+            style={{ height: 'auto', maxWidth: '100%', width: '100%' }}
+            value={url as string}
+            viewBox={`0 0 500 500`}
+          />
         </div>
         <div className="mt-6 flex w-full items-center justify-between gap-2">
           <button

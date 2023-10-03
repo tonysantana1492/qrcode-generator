@@ -20,8 +20,8 @@ const router = createBrowserRouter([
       {
         path: '/generate',
         lazy: async () => {
-          const { QRCode } = await import('./pages/QRCode')
-          return { Component: QRCode }
+          const { QRCodePage } = await import('./pages/QRCode')
+          return { Component: QRCodePage }
         },
         loader: qrCodeLoader,
       },
