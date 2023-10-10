@@ -74,7 +74,7 @@ export const QRCodePage = () => {
           ></img> */}
           <QRCode
             id="QRCode"
-            className="rounded-2xl bg-light p-4"
+            className="rounded-2xl bg-white p-4"
             size={500}
             style={{ height: 'auto', maxWidth: '100%', width: '100%' }}
             value={url as string}
