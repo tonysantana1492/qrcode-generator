@@ -65,13 +65,6 @@ export const QRCodePage = () => {
       </header>
       <section className="mt-24 flex w-full max-w-xs flex-col items-center justify-start gap-8">
         <div className="relative flex items-center justify-center rounded-full bg-sky-950 p-6">
-          {/* <img
-            className="rounded-2xl bg-light p-2"
-            height="auto"
-            width={200}
-            src={qr as string}
-            alt="qr-code"
-          ></img> */}
           <QRCode
             id="QRCode"
             className="rounded-2xl bg-white p-4"
