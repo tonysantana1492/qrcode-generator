@@ -34,6 +34,7 @@ export const Home = () => {
           className="h-[30px] w-[inherit] flex-grow bg-transparent px-8 text-light outline-none placeholder:text-alternative"
           placeholder="Enter an url"
           autoFocus
+          autoComplete="do-not-autofill"
         />
         <button
           type="submit"
