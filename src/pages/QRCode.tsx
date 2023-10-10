@@ -20,16 +20,17 @@ export const qrCodeLoader = async ({ request }: LoaderFunctionArgs<string>) => {
 export const QRCodePage = () => {
   const url = useLoaderData()
 
-  const handleShare = () => {
-    window.navigator.share({ url: window.location.href })
-  }
+  const handleShare = async () => {
+    const svg = document.getElementById('QRCode')
 
-  // const handleDownloadQrCode = () => {
-  //   const linkElement = document.createElement('a')
-  //   linkElement.download = 'qr-code.png'
-  //   linkElement.href = qr as string
-  //   linkElement.click()
-  // }
+    if (!svg) return
+    const svgData = new XMLSerializer().serializeToString(svg)
+    const dataURL = `data:image/svg+xml;base64,${btoa(svgData)}`
+    const blob = await (await fetch(dataURL)).blob()
+    const file = new File([blob], 'qr-code.png', { type: blob.type })
+    window.navigator.share({ files: [file] })
+    // window.navigator.share({ url: window.location.href })
+  }
 
   const handleDownloadQrCode = () => {
     const svg = document.getElementById('QRCode')
