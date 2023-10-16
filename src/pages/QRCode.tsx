@@ -21,16 +21,16 @@ export const QRCodePage = () => {
   const url = useLoaderData()
 
   const handleShare = async () => {
-    const svg = document.getElementById('QRCode')
+    // const svg = document.getElementById('QRCode')
 
-    if (!svg) return
-    const svgData = new XMLSerializer().serializeToString(svg)
-    const dataURL = `data:image/svg+xml;base64,${btoa(svgData)}`
-    const blob = await (await fetch(dataURL)).blob()
-    const file = new File([blob], 'qr-code.svg', { type: blob.type })
+    // if (!svg) return
+    // const svgData = new XMLSerializer().serializeToString(svg)
+    // const dataURL = `data:image/svg+xml;base64,${btoa(svgData)}`
+    // const blob = await (await fetch(dataURL)).blob()
+    // const file = new File([blob], 'qr-code.svg', { type: blob.type })
 
-    window.navigator.share({ files: [file] })
-    // window.navigator.share({ url: window.location.href })
+    // window.navigator.share({ files: [file] })
+    window.navigator.share({ url: window.location.href })
   }
 
   const handleDownloadQrCode = () => {
