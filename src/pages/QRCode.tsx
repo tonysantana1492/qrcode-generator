@@ -1,9 +1,8 @@
 import { Link, LoaderFunctionArgs, redirect, useLoaderData } from 'react-router-dom'
 import QRCode from 'react-qr-code'
 
-import { canParseURL } from '../lib/utils'
+import { validateURL } from '../lib/utils'
 import { Download, Logo, Share } from '../components/Icons'
-import { useState } from 'react'
 
 export const qrCodeLoader = async ({ request }: LoaderFunctionArgs<string>) => {
   const href = request.url
@@ -11,7 +10,7 @@ export const qrCodeLoader = async ({ request }: LoaderFunctionArgs<string>) => {
   const parseUrl = new URL(href)
   const url = parseUrl.searchParams.get('url')
 
-  const isvalidURL = canParseURL(url)
+  const isvalidURL = validateURL(url)
 
   if (!isvalidURL) return redirect('/')
 
@@ -20,7 +19,6 @@ export const qrCodeLoader = async ({ request }: LoaderFunctionArgs<string>) => {
 
 export const QRCodePage = () => {
   const url = useLoaderData()
-  const [qr, setQR] = useState('')
 
   const handleShare = async () => {
     const svg = document.getElementById('QRCode')
@@ -30,13 +28,8 @@ export const QRCodePage = () => {
     const dataURL = `data:image/svg+xml;base64,${btoa(svgData)}`
     const blob = await (await fetch(dataURL)).blob()
     const file = new File([blob], 'qr-code.svg', { type: blob.type })
-    // window.navigator.share({ files: [file] })
-    const reader = new FileReader()
-    reader.readAsDataURL(file)
-    reader.onload = () => {
-      setQR(reader.result as string)
-    }
 
+    window.navigator.share({ files: [file] })
     // window.navigator.share({ url: window.location.href })
   }
 
@@ -73,13 +66,6 @@ export const QRCodePage = () => {
       </header>
       <section className="mt-24 flex w-full max-w-xs flex-col items-center justify-start gap-8">
         <div className="relative flex items-center justify-center rounded-full bg-sky-950 p-6">
-          <img
-            className="rounded-2xl bg-light p-2"
-            height="auto"
-            width={200}
-            src={qr as string}
-            alt="qr-code"
-          ></img>
           <QRCode
             id="QRCode"
             className="rounded-2xl bg-white p-4"
