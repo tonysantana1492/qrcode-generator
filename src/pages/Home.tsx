@@ -1,26 +1,33 @@
+import { useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
 
-import { canParseURL } from '../lib/utils'
+import { validateURL } from '../lib/utils'
 import { Logo } from '../components/Icons'
 
 export const Home = () => {
   const navigate = useNavigate()
 
-  const handleSubmitForm = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
+  const handleSubmitForm = useCallback(
+    async (event: React.FormEvent<HTMLFormElement>) => {
+      event.preventDefault()
 
-    const formElement = event.target as HTMLFormElement
-    const formData = new FormData(formElement)
+      const formElement = event.target as HTMLFormElement
+      const formData = new FormData(formElement)
 
-    const url = formData.get('url') as string
+      const url = formData.get('url') as string
 
-    const isValidURL = canParseURL(url)
+      const isValidURL = validateURL(url)
 
-    if (!isValidURL) return toast.error('You must enter a valid url')
+      if (!isValidURL) {
+        toast.error('You must enter a valid url')
+        return
+      }
 
-    navigate(`/generate?url=${url}`)
-  }
+      navigate({ pathname: '/generate', search: `?url=${encodeURIComponent(url)}` })
+    },
+    [navigate],
+  )
 
   return (
     <section className="mt-52 flex h-full w-full max-w-2xl flex-col items-center justify-start gap-8">

@@ -1,4 +1,4 @@
-export const canParseURL = (url: string | null) => {
+export const validateURL = (url: string | null) => {
   if (!url) return false
 
   try {
